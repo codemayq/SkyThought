@@ -1,5 +1,5 @@
 handler: aime
-dataset_path: AI-MO/aimo-validation-aime
+dataset_path: /workspace/mnt/transfer_folder/eval_repo/SkyThought/data/aimo-validation-aime/data/
 dataset_split: train
 question_key: problem
 answer_key: answer

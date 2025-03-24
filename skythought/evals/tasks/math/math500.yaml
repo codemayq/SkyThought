@@ -1,5 +1,5 @@
 handler: math
-dataset_path: "qq8933/MATH500"  # repo ID in huggingface
+dataset_path: /workspace/mnt/transfer_folder/eval_repo/SkyThought/data/MATH-500/  # repo ID in huggingface
 dataset_subset: null # which subset on huggingface
 question_key: problem
 answer_key: answer

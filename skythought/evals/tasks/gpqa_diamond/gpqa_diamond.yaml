@@ -1,5 +1,5 @@
 handler: gpqa_diamond
-dataset_path: Idavidrein/gpqa
+dataset_path: /workspace/mnt/transfer_folder/eval_repo/SkyThought/data/gpqa/
 dataset_subset: gpqa_diamond
 dataset_split: train
 question_key: Question
