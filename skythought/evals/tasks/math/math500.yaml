@@ -5,7 +5,8 @@ question_key: problem
 answer_key: answer
 dataset_split: test
 templating_parameters: 
-  template: "Return your final response within \\boxed{{}}. {problem}"
+  # template: "Return your final response within \\boxed{{}}. {problem}"
+  template: "Solve the following math problem efficiently and clearly.  The last line of your response should be of the following format: 'Therefore, the final answer is: $\\boxed{{ANSWER}}$. I hope it is correct' (without quotes) where ANSWER is just the final number or expression that solves the problem. Think step by step before answering.\n\nProblem: {problem}"
 # optional. Not supported yet. 
 # fewshot_config:
 #   - question: ...

@@ -6,4 +6,5 @@ question_key: Question
 answer_key: Answer
 templating_parameters:
   # For GPQA, we combine the Question key and the multiple choice answers into a single `prompt` entry
-  template:  "Return your final response within \\boxed{{}} and only include the letter choice (A, B, C, or D) as your final response. {prompt}" 
+  #template:  "Return your final response within \\boxed{{}} and only include the letter choice (A, B, C, or D) as your final response. {prompt}"
+  template: "Answer the following multiple choice question. The last line of your response should be of the following format: 'Answer: $LETTER' (without quotes) where LETTER is one of ABCD. Think step by step before answering.\n\n{prompt}"
