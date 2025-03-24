@@ -91,7 +91,7 @@ class LiveCodeBenchTaskHandler(TaskHandler):
     def lcb_load_dataset(self, subset=None, split=None, **kwargs):
         dataset = load_dataset(
             "json",
-            data_files="/share/wenchaohang/project/SkyThought/skythought/evals/tasks/livecodebench/test2.jsonl",
+            data_files="/workspace/mnt/transfer_folder/eval_repo/SkyThought/data/code_generation_lite_filter/test_total.jsonl",
             # name=subset if subset else self.task_config.dataset_subset,
             # split=split if split else self.task_config.dataset_split,
             split="train"
