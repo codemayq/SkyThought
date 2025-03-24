@@ -12,7 +12,10 @@ from .livecodebench_util import (
     translate_private_test_cases,
     unsafe_lcb_runTests,
 )
-
+from datasets import Dataset as HFDataset
+from datasets import load_dataset
+from skythought.evals.tasks.base import add_idx_map
+import json
 
 class LiveCodeBenchTaskHandler(TaskHandler):
 
@@ -61,6 +64,7 @@ class LiveCodeBenchTaskHandler(TaskHandler):
             "reason": None,
         }
         code_filter_result = has_code(response)
+        response_entry["generate_code"] = json.dumps(code_filter_result)
         # print(response)
         if len(code_filter_result) == 0:
             response_entry["correctness"] = False
@@ -84,10 +88,38 @@ class LiveCodeBenchTaskHandler(TaskHandler):
 
         return response_entry
 
+    def lcb_load_dataset(self, subset=None, split=None, **kwargs):
+        dataset = load_dataset(
+            "json",
+            data_files="/share/wenchaohang/project/SkyThought/skythought/evals/tasks/livecodebench/test2.jsonl",
+            # name=subset if subset else self.task_config.dataset_subset,
+            # split=split if split else self.task_config.dataset_split,
+            split="train"
+            # **self.task_config.dataset_kwargs,
+        )
+        # add an index column efficiently with map
+        dataset = dataset.map(add_idx_map, with_indices=True)
+        return dataset
+
+    def lcb_new_load_dataset(self, subset=None, split=None, **kwargs):
+        dataset = load_dataset(
+            "json",
+            data_files="/workspace/mnt/transfer_folder/eval_repo/SkyThought/data/code_generation_lite_filter/test_total.jsonl",
+            # name=subset if subset else self.task_config.dataset_subset,
+            # split=split if split else self.task_config.dataset_split,
+            split="train"
+            # **self.task_config.dataset_kwargs,
+        )
+        # add an index column efficiently with map
+        dataset = dataset.map(add_idx_map, with_indices=True)
+        return dataset
+
     def load_and_filter_dataset(
         self, start, end, split=None, subset=None, difficulty=None
     ):
-        dataset: HFDataset = self.load_dataset(subset=subset, split=split)
+        dataset: HFDataset = self.lcb_load_dataset(subset=subset, split=split)
+        if self.task_config.dataset_subset == "new":
+            dataset = self.lcb_new_load_dataset(subset=subset, split=split)
         # Filter by CLI or config
         if difficulty or "difficulty" in self.task_config.preprocess_config:
             difficulty = (

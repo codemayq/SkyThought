@@ -194,6 +194,9 @@ def prepare_test_input_output_std(test_case):
 
 
 def run_test_func(completion, is_extracted, test_input, test_output):
+    import_string = "from string import *\nfrom re import *\nfrom datetime import *\nfrom collections import *\nfrom heapq import *\nfrom bisect import *\nfrom copy import *\nfrom math import *\nfrom random import *\nfrom statistics import *\nfrom itertools import *\nfrom functools import *\nfrom operator import *\nfrom io import *\nfrom sys import *\nfrom json import *\nfrom builtins import *\nfrom typing import *\nimport string\nimport re\nimport datetime\nimport collections\nimport heapq\nimport bisect\nimport copy\nimport math\nimport random\nimport statistics\nimport itertools\nimport functools\nimport operator\nimport io\nimport sys\nimport json\n"
+    completion = import_string + completion
+    
     # print(f"inside: {completion}")
     if not is_extracted:
         # Define the namespace in which to execute the completion code
@@ -201,7 +204,17 @@ def run_test_func(completion, is_extracted, test_input, test_output):
 
         # Execute the generated code in the namespace
 
-        exec(completion, namespace)
+        # exec(completion, namespace)
+        input_buffer = StringIO("预设的输入\n")
+        sys.stdin = input_buffer
+        output = io.StringIO()
+        sys.stdout = output
+        # exec(completion, namespace)
+        try:
+            exec(completion, namespace)
+        except Exception as e:
+            print(e)
+        sys.stdin = sys.__stdin__
 
         # Retrieve the function name from the completion (assuming the function name is consistent)
         func_name = completion.split("(")[0].split()[-1]
@@ -222,6 +235,13 @@ def run_test_func(completion, is_extracted, test_input, test_output):
 
         # Call the function and get the result
         try:
+            if "Solution" in namespace:
+                instance = namespace["Solution"]()
+                target_method = getattr(instance, func_name)
+                namespace = {}
+                namespace = {
+                    func_name: target_method  
+                }
             # Execute the function with the prepared inputs
             result_output = namespace[func_name](*args, **kwargs)
 
@@ -243,7 +263,17 @@ def run_test_func(completion, is_extracted, test_input, test_output):
 
         # Execute the generated code in the namespace
 
-        exec(completion, namespace)
+        # exec(completion, namespace)
+        input_buffer = StringIO("预设的输入\n")
+        sys.stdin = input_buffer
+        output = io.StringIO()
+        sys.stdout = output
+        # exec(completion, namespace)
+        try:
+            exec(completion, namespace)
+        except Exception as e:
+            print(e)
+        sys.stdin = sys.__stdin__
 
         # Retrieve the function name from the completion (assuming the function name is consistent)
         func_name = completion.split("(")[0].split()[-1]
@@ -254,6 +284,13 @@ def run_test_func(completion, is_extracted, test_input, test_output):
 
         # Call the function and get the result
         try:
+            if "Solution" in namespace:
+                instance = namespace["Solution"]()
+                target_method = getattr(instance, func_name)
+                namespace = {}
+                namespace = {
+                    func_name: target_method  
+                }
             # Execute the function with the prepared inputs
             result_output = namespace[func_name](*test_input)
 
@@ -279,10 +316,17 @@ def run_test_std(completion, test_input, test_output):
         # Simulate that the code is being run as the main script
         completion = '__name__ = "__main__"\n' + completion
 
+    import_string = "from string import *\nfrom re import *\nfrom datetime import *\nfrom collections import *\nfrom heapq import *\nfrom bisect import *\nfrom copy import *\nfrom math import *\nfrom random import *\nfrom statistics import *\nfrom itertools import *\nfrom functools import *\nfrom operator import *\nfrom io import *\nfrom sys import *\nfrom json import *\nfrom builtins import *\nfrom typing import *\nimport string\nimport re\nimport datetime\nimport collections\nimport heapq\nimport bisect\nimport copy\nimport math\nimport random\nimport statistics\nimport itertools\nimport functools\nimport operator\nimport io\nimport sys\nimport json\n"
+    completion = import_string + completion
+    
+
     namespace = {}
     exec(completion, namespace)
 
     output_value = output.getvalue().strip()
+    
+    output = io.StringIO()
+    sys.stdout = output
     return output_value == test_output, output_value
 
 
