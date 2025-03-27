@@ -7,7 +7,6 @@ authors = [
 ]
 requires-python = ">=3.9,<3.11"
 dependencies = [
-    "vllm==0.7.0",
     "word2number",
     "scipy",
     "datasets",
